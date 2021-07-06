@@ -1,6 +1,6 @@
 import { SignalingClient, Role } from 'amazon-kinesis-video-streams-webrtc';
 import { KinesisVideo, KinesisVideoSignalingChannels } from 'aws-sdk';
-import { IFormValues } from './app.component';
+import { IFormValues } from '../models';
 
 export interface ICEServerByProtocol {
   WSS: string;
