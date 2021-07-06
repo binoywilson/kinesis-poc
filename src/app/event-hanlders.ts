@@ -15,7 +15,7 @@ export const toggleDataChannelElements = (formValues: IFormValues) => {
 };
 
 export const registerEvents = (formValues: IFormValues) => {
-  $('#master-button').click(async () => {
+  $('#master-button').on('click', async () => {
     $('#form').addClass('d-none');
     $('#master').removeClass('d-none');
 
@@ -33,14 +33,14 @@ export const registerEvents = (formValues: IFormValues) => {
     });
   });
 
-  $('#stop-master-button').click(async () => {
+  $('#stop-master-button').on('click', async () => {
     stopMaster();
 
     $('#form').removeClass('d-none');
     $('#master').addClass('d-none');
   });
 
-  $('#viewer-button').click(async () => {
+  $('#viewer-button').on('click', async () => {
     $('#form').addClass('d-none');
     $('#viewer').removeClass('d-none');
 
@@ -58,21 +58,21 @@ export const registerEvents = (formValues: IFormValues) => {
     });
   });
 
-  $('#stop-viewer-button').click(async () => {
+  $('#stop-viewer-button').on('click', async () => {
     stopViewer();
 
     $('#form').removeClass('d-none');
     $('#viewer').addClass('d-none');
   });
 
-  $('#master .send-message').click(async () => {
+  $('#master .send-message').on('click', async () => {
     const masterLocalMessage = $(
       '#master .local-message'
     )[0] as HTMLInputElement;
     sendMasterMessage(masterLocalMessage.value);
   });
 
-  $('#viewer .send-message').click(async () => {
+  $('#viewer .send-message').on('click', async () => {
     const viewerLocalMessage = $(
       '#viewer .local-message'
     )[0] as HTMLInputElement;
