@@ -11,6 +11,9 @@ export interface AwsSettings {
   secretAccessKey: string;
   region: string;
   clientId: string;
+  sessionToken?: string;
+  endpoint?: string;
+  channelName?: string;
 }
 
 @Injectable({

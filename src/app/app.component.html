@@ -2,38 +2,45 @@
   <h1>KVS WebRTC Test Page</h1>
   <p>This is the KVS Signaling Channel WebRTC test page. Use this page to connect to a signaling channel as either the
     MASTER or as a VIEWER.</p>
-  <!-- <div id="main" class="d-none">
-    <form id="form">
+
+  <div class="row loader"></div>
+  <div id="main" class="d-none">
+    <div id="form" *ngIf='formValues'>
       <h4>KVS Endpoint</h4>
       <div class="form-group">
         <label>Region</label>
-        <input type="text" class="form-control" id="region" value="us-west-2">
+        <input type="text" class="form-control" id="region" [value]="formValues.region" disabled>
       </div>
       <div class="form-group">
         <label>Endpoint <small>(optional)</small></label>
-        <input type="text" class="form-control" id="endpoint" placeholder="Endpoint">
+        <input type="text" class="form-control" id="endpoint" placeholder="Endpoint" [(ngModel)]="formValues.endpoint">
       </div>
       <h4>AWS Credentials</h4>
       <div class="form-group">
         <label>Access Key ID</label>
-        <input type="text" class="form-control" id="accessKeyId" placeholder="Access key id">
+        <input type="text" class="form-control" id="accessKeyId" placeholder="Access key id"
+          [(ngModel)]="formValues.accessKeyId">
       </div>
       <div class="form-group">
         <label>Secret Access Key</label>
-        <input type="password" class="form-control" id="secretAccessKey" placeholder="Secret access key">
+        <input type="text" class="form-control" id="secretAccessKey" placeholder="Secret access key"
+          [(ngModel)]="formValues.secretAccessKey">
       </div>
       <div class="form-group">
         <label>Session Token <small>(optional)</small></label>
-        <input type="password" class="form-control" id="sessionToken" placeholder="Session token">
+        <input type="text" class="form-control" id="sessionToken" placeholder="Session token"
+          [(ngModel)]="formValues.sessionToken">
       </div>
       <h4>Signaling Channel</h4>
       <div class="form-group">
         <label>Channel Name</label>
-        <input type="text" class="form-control" id="channelName" placeholder="Channel">
+        <input type="text" class="form-control" id="channelName" placeholder="Channel"
+          [(ngModel)]="formValues.channelName">
       </div>
       <div class="form-group">
         <label>Client Id <small>(optional)</small></label>
-        <input type="text" class="form-control" id="clientId" placeholder="Client id">
+        <input type="text" class="form-control" id="clientId" placeholder="Client id" [(ngModel)]="formValues.clientId"
+          disabled>
       </div>
       <h4>Tracks</h4>
       <p><small>Control which media types are transmitted to the remote client.</small></p>
@@ -91,7 +98,7 @@
         <button id="viewer-button" type="button" class="btn btn-primary">Start Viewer</button>
         <button id="create-channel-button" type="button" class="btn btn-primary">Create Channel</button>
       </div>
-    </form>
+    </div>
 
     <div id="master" class="d-none">
       <h2>Master</h2>
@@ -162,7 +169,7 @@
       <pre id="logs" class="card-body text-monospace preserve-whitespace"></pre>
     </div>
 
-  </div> -->
+  </div>
 </div>
 
-<button type="button" (click)='setupKinesis()'>Start Kinesis</button>
+<div id="test"></div>

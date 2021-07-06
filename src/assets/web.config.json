@@ -4,6 +4,9 @@
     "accessKeyId": "ACCESS_KEY_ID_GOES_HERE",
     "secretAccessKey": "SECRET_ACCESS_KEY_GOES_HERE",
     "region": "us-west-2",
-    "clientId": "RANDOM_VALUE"
+    "clientId": "RANDOM_VALUE",
+    "endpoint": "END_POINT",
+    "sessionToken": "SESSION_TOKEN",
+    "channelName": "CHANNEL_NAME"
   }
 }

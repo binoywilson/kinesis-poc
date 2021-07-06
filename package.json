@@ -21,8 +21,10 @@
     "@angular/router": "~10.0.5",
     "@aws-sdk/client-kinesis": "^3.20.0",
     "@aws-sdk/client-kinesis-video": "^3.20.0",
+    "@types/jquery": "^3.5.5",
     "amazon-kinesis-video-streams-webrtc": "^1.0.8",
     "aws-sdk": "^2.939.0",
+    "jquery": "^3.6.0",
     "rxjs": "~6.5.5",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.3"

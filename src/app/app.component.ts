@@ -1,36 +1,85 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component } from '@angular/core';
 
-import { SignalingClient } from 'amazon-kinesis-video-streams-webrtc';
+import * as AWS from 'aws-sdk';
 import { AppConfigService } from './app-config.service';
+import { registerEvents } from './event-hanlders';
+import { configureLogging } from './logger.helper';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent {
+export class AppComponent implements AfterViewInit {
   title = 'aws-kinesis';
 
-  constructor(private appConfig: AppConfigService) {}
+  formValues: {
+    region: string;
+    accessKeyId: string;
+    secretAccessKey: string;
+    sessionToken: string;
+    endpoint?: string;
+    channelName?: string;
+    clientId?: string;
+  };
 
-  async setupKinesis() {
-    // DescribeSignalingChannel API can also be used to get the ARN from a channel name.
-    const channelARN = this.appConfig.config.aws.channelARN;
+  constructor(private appConfig: AppConfigService) {
+    this.formValues = {
+      region: this.appConfig.config.aws.region,
+      accessKeyId: this.appConfig.config.aws.accessKeyId,
+      secretAccessKey: this.appConfig.config.aws.secretAccessKey,
+      sessionToken: this.appConfig.config.aws.sessionToken,
+      endpoint: this.appConfig.config.aws.endpoint,
+      channelName: this.appConfig.config.aws.channelName,
+      clientId: this.appConfig.randomClientId,
+    };
 
-    // AWS Credentials
-    const accessKeyId = this.appConfig.config.aws.accessKeyId;
-    const secretAccessKey = this.appConfig.config.aws.secretAccessKey;
+    window.addEventListener('error', function (event) {
+      console.error(event.message);
+      event.preventDefault();
+    });
 
-    // <video> HTML elements to use to display the local webcam stream and remote stream from the master
-    const localView = document.getElementsByTagName('video')[0];
-    const remoteView = document.getElementsByTagName('video')[1];
+    window.addEventListener('unhandledrejection', function (event) {
+      console.error(event.reason.toString());
+      event.preventDefault();
+    });
 
-    const region = this.appConfig.config.aws.region;
-    const clientId = this.appConfig.randomClientId;
+    configureLogging();
 
-    const sessionToken = '';
-    const endpoint = '';
+    registerEvents(this.createSignalingChannel, this.formValues);
+  }
 
+  async createSignalingChannel() {
+    // Create KVS client
+    const kinesisVideoClient = new AWS.KinesisVideo({
+      region: this.formValues.region,
+      accessKeyId: this.formValues.accessKeyId,
+      secretAccessKey: this.formValues.secretAccessKey,
+      sessionToken: this.formValues.sessionToken,
+      endpoint: this.formValues.endpoint,
+    });
 
+    // Get signaling channel ARN
+    await kinesisVideoClient
+      .createSignalingChannel({
+        ChannelName: this.formValues.channelName,
+      })
+      .promise();
+
+    // Get signaling channel ARN
+    const describeSignalingChannelResponse = await kinesisVideoClient
+      .describeSignalingChannel({
+        ChannelName: this.formValues.channelName,
+      })
+      .promise();
+    const channelARN = describeSignalingChannelResponse.ChannelInfo.ChannelARN;
+    console.log('[CREATE_SIGNALING_CHANNEL] Channel ARN: ', channelARN);
+  }
+
+  ngAfterViewInit() {
+    // The page is all setup. Hide the loading spinner and show the page content.
+    document.querySelector('.loader').classList.add('d-none');
+    document.querySelector('#main').classList.remove('d-none');
+    console.log('Page loaded');
   }
 }
