@@ -1,1 +1,33 @@
-<p>join-channel works!</p>
+<div class="p-32">
+  <div class="text-center" *ngIf='!isViewer'>
+    <button class="btn btn-primary" (click)='startJoinee()'>Join</button>
+  </div>
+
+  <div class="row" id="hideAll">
+    <div class="d-none row" id="master" *ngIf='!isViewer'>
+      <div class="col-3">
+        <h2>Master</h2>
+        <div class="video-container">
+          <video class="local-view" autoplay playsinline controls></video>
+        </div>
+      </div>
+      <div class="col-9">
+        <div class="d-none row" id="remote-view"></div>
+      </div>
+    </div>
+
+    <div id="viewer" class="d-none" *ngIf='isViewer'>
+      <div class="row">
+        <div class="col">
+          <h5>Viewer</h5>
+          <div class="video-container"><video class="local-view" autoplay playsinline controls></video></div>
+        </div>
+        <div class="col">
+          <h5>From Master</h5>
+          <div class="video-container"><video class="remote-view" autoplay playsinline controls></video></div>
+        </div>
+      </div>
+      <button id="stop-viewer-button" type="button" class="btn btn-primary">Stop Viewer</button>
+    </div>
+  </div>
+</div>

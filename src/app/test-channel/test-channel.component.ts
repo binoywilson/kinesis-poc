@@ -1,4 +1,5 @@
 import { AfterViewInit, Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { KinesisVideo } from 'aws-sdk';
 
 import { AppConfigService } from '../app-config.service';
@@ -15,7 +16,9 @@ import { IFormValues } from '../models';
 export class TestChannelComponent implements AfterViewInit {
   formValues: IFormValues;
 
-  constructor(private appConfig: AppConfigService) {
+  createChannelLoading = false;
+
+  constructor(private appConfig: AppConfigService, private router: Router) {
     this.formValues = {
       region: this.appConfig.config.aws.region,
       accessKeyId: this.appConfig.config.aws.accessKeyId,
@@ -44,30 +47,37 @@ export class TestChannelComponent implements AfterViewInit {
   }
 
   async createSignalingChannel() {
-    // Create KVS client
-    const kinesisVideoClient = new KinesisVideo({
-      region: this.formValues.region,
-      accessKeyId: this.formValues.accessKeyId,
-      secretAccessKey: this.formValues.secretAccessKey,
-      sessionToken: this.formValues.sessionToken,
-      endpoint: this.formValues.endpoint,
-    });
+    try {
+      if (this.createChannelLoading) {
+        return;
+      }
 
-    // Get signaling channel ARN
-    await kinesisVideoClient
-      .createSignalingChannel({
-        ChannelName: this.formValues.channelName,
-      })
-      .promise();
+      this.createChannelLoading = true;
 
-    // Get signaling channel ARN
-    const describeSignalingChannelResponse = await kinesisVideoClient
-      .describeSignalingChannel({
-        ChannelName: this.formValues.channelName,
-      })
-      .promise();
-    const channelARN = describeSignalingChannelResponse.ChannelInfo.ChannelARN;
-    console.log('[CREATE_SIGNALING_CHANNEL] Channel ARN: ', channelARN);
+      // Create KVS client
+      const kinesisVideoClient = new KinesisVideo({
+        region: this.formValues.region,
+        accessKeyId: this.formValues.accessKeyId,
+        secretAccessKey: this.formValues.secretAccessKey,
+        sessionToken: this.formValues.sessionToken,
+        endpoint: this.formValues.endpoint,
+      });
+
+      // Get signaling channel ARN
+      await kinesisVideoClient
+        .createSignalingChannel({
+          ChannelName: this.formValues.channelName,
+        })
+        .promise();
+
+      this.router.navigate(['/join'], {
+        queryParams: {
+          channel: this.formValues.channelName,
+        },
+      });
+    } catch {
+      this.createChannelLoading = false;
+    }
   }
 
   ngAfterViewInit() {

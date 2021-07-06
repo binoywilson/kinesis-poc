@@ -4,7 +4,7 @@ import { TestChannelComponent } from './test-channel/test-channel.component';
 
 const AppRoutes: Route[] = [
   {
-    path: 'join/:channel',
+    path: 'join',
     component: JoinChannelComponent,
   },
   {
