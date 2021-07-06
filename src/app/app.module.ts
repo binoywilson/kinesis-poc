@@ -1,16 +1,26 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
+import { AppConfigService } from './app-config.service';
+import { HttpClientModule } from '@angular/common/http';
+
+// Add this function
+export function initConfig(config: AppConfigService) {
+  return () => config.loadCofig();
+}
 
 @NgModule({
-  declarations: [
-    AppComponent
+  declarations: [AppComponent],
+  imports: [BrowserModule, HttpClientModule],
+  providers: [
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initConfig,
+      deps: [AppConfigService],
+      multi: true,
+    },
   ],
-  imports: [
-    BrowserModule
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

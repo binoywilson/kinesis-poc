@@ -1,0 +1,9 @@
+{
+  "aws": {
+    "channelARN": "arn:aws:kinesisvideo:us-west-2:123456789012:channel/test-channel/1234567890",
+    "accessKeyId": "ACCESS_KEY_ID_GOES_HERE",
+    "secretAccessKey": "SECRET_ACCESS_KEY_GOES_HERE",
+    "region": "us-west-2",
+    "clientId": "RANDOM_VALUE"
+  }
+}
