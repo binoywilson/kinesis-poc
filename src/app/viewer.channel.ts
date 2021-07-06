@@ -1,5 +1,7 @@
 import * as KVSWebRTC from 'amazon-kinesis-video-streams-webrtc';
 import * as AWS from 'aws-sdk';
+import { IFormValues } from './app.component';
+import { ICEServerByProtocol } from './master.channel';
 
 /**
  * This file demonstrates the process of starting WebRTC streaming using a KVS Signaling Channel.
@@ -20,7 +22,7 @@ export const viewer = {
 export async function startViewer(
   localView,
   remoteView,
-  formValues,
+  formValues: IFormValues,
   onStatsReport,
   onRemoteDataMessage
 ) {
@@ -64,7 +66,7 @@ export async function startViewer(
         endpoints[endpoint.Protocol] = endpoint.ResourceEndpoint;
         return endpoints;
       },
-      {}
+      {} as ICEServerByProtocol
     );
   console.log('[VIEWER] Endpoints: ', endpointsByProtocol);
 
@@ -74,7 +76,7 @@ export async function startViewer(
       accessKeyId: formValues.accessKeyId,
       secretAccessKey: formValues.secretAccessKey,
       sessionToken: formValues.sessionToken,
-      endpoint: 'HTTPS',
+      endpoint: endpointsByProtocol.HTTPS,
       correctClockSkew: true,
     });
 
@@ -86,13 +88,16 @@ export async function startViewer(
     .promise();
   const iceServers = [];
 
-  if (!formValues.natTraversalDisabled && !formValues.forceTURN) {
+  if (
+    formValues.natTraversal != 'natTraversalDisabled' &&
+    formValues.natTraversal != 'forceTURN'
+  ) {
     iceServers.push({
       urls: `stun:stun.kinesisvideo.${formValues.region}.amazonaws.com:443`,
     });
   }
 
-  if (!formValues.natTraversalDisabled) {
+  if (formValues.natTraversal != 'natTraversalDisabled') {
     getIceServerConfigResponse.IceServerList.forEach((iceServer) =>
       iceServers.push({
         urls: iceServer.Uris,
@@ -107,7 +112,7 @@ export async function startViewer(
   // Create Signaling Client
   viewer.signalingClient = new KVSWebRTC.SignalingClient({
     channelARN,
-    channelEndpoint: 'WSS',
+    channelEndpoint: endpointsByProtocol.WSS,
     clientId: formValues.clientId,
     role: KVSWebRTC.Role.VIEWER,
     region: formValues.region,
@@ -119,18 +124,20 @@ export async function startViewer(
     systemClockOffset: kinesisVideoClient.config.systemClockOffset,
   });
 
-  const resolution = formValues.widescreen
-    ? { width: { ideal: 1280 }, height: { ideal: 720 } }
-    : { width: { ideal: 640 }, height: { ideal: 480 } };
+  const resolution =
+    formValues.resolution == 'widescreen'
+      ? { width: { ideal: 1280 }, height: { ideal: 720 } }
+      : { width: { ideal: 640 }, height: { ideal: 480 } };
 
   const constraints = {
-    video: formValues.sendVideo ? resolution : false,
-    audio: formValues.sendAudio,
+    video: formValues.video ? resolution : false,
+    audio: formValues.audio,
   };
 
   const configuration: any = {
     iceServers,
-    iceTransportPolicy: formValues.forceTURN ? 'relay' : 'all',
+    iceTransportPolicy:
+      formValues.natTraversal == 'forceTURN' ? 'relay' : 'all',
   };
 
   viewer.peerConnection = new RTCPeerConnection(configuration);

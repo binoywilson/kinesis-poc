@@ -5,6 +5,22 @@ import { AppConfigService } from './app-config.service';
 import { registerEvents } from './event-hanlders';
 import { configureLogging } from './logger.helper';
 
+export interface IFormValues {
+  region: string;
+  accessKeyId: string;
+  secretAccessKey: string;
+  sessionToken: string;
+  endpoint?: string;
+  channelName?: string;
+  clientId?: string;
+  video?: boolean;
+  audio?: boolean;
+  openDataChannel?: boolean;
+  resolution?: string;
+  natTraversal?: string;
+  useTrickleICE?: boolean;
+}
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -13,15 +29,7 @@ import { configureLogging } from './logger.helper';
 export class AppComponent implements AfterViewInit {
   title = 'aws-kinesis';
 
-  formValues: {
-    region: string;
-    accessKeyId: string;
-    secretAccessKey: string;
-    sessionToken: string;
-    endpoint?: string;
-    channelName?: string;
-    clientId?: string;
-  };
+  formValues: IFormValues;
 
   constructor(private appConfig: AppConfigService) {
     this.formValues = {
@@ -32,6 +40,10 @@ export class AppComponent implements AfterViewInit {
       endpoint: this.appConfig.config.aws.endpoint,
       channelName: this.appConfig.config.aws.channelName,
       clientId: this.appConfig.randomClientId,
+      video: true,
+      resolution: 'widescreen',
+      natTraversal: 'STUN',
+      useTrickleICE: true,
     };
 
     window.addEventListener('error', function (event) {

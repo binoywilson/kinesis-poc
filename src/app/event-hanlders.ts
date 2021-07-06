@@ -1,3 +1,4 @@
+import { IFormValues } from './app.component';
 import { sendMasterMessage, stopMaster, startMaster } from './master.channel';
 import { sendViewerMessage, stopViewer, startViewer } from './viewer.channel';
 
@@ -5,7 +6,7 @@ export function onStatsReport(report) {
   // TODO: Publish stats
 }
 
-export const toggleDataChannelElements = (formValues) => {
+export const toggleDataChannelElements = (formValues: IFormValues) => {
   if (formValues.openDataChannel) {
     $('.datachannel').removeClass('d-none');
   } else {
@@ -13,7 +14,7 @@ export const toggleDataChannelElements = (formValues) => {
   }
 };
 
-export const registerEvents = (createSignalingChannel, formValues) => {
+export const registerEvents = (createSignalingChannel, formValues: IFormValues) => {
   $('#master-button').click(async () => {
     $('#form').addClass('d-none');
     $('#master').removeClass('d-none');

@@ -1,12 +1,12 @@
 {
   "aws": {
-    "channelARN": "arn:aws:kinesisvideo:us-west-2:123456789012:channel/test-channel/1234567890",
+    "channelARN": "arn:aws:kinesisvideo:us-west-2:053189073483:channel/dev-ashwani-test-1/1625545124228",
     "accessKeyId": "AKIAQYYSQ3JFS5RXO3MQ",
     "secretAccessKey": "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",
     "region": "us-west-2",
     "clientId": "RANDOM_VALUE",
-    "endpoint": "END_POINT",
-    "sessionToken": "SESSION_TOKEN",
-    "channelName": "CHANNEL_NAME"
+    "endpoint": null,
+    "sessionToken": null,
+    "channelName": "dev-ashwani-test-1"
   }
 }

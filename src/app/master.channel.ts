@@ -1,5 +1,11 @@
 import * as KVSWebRTC from 'amazon-kinesis-video-streams-webrtc';
 import * as AWS from 'aws-sdk';
+import { IFormValues } from './app.component';
+
+export interface ICEServerByProtocol {
+  WSS: string;
+  HTTPS: string;
+}
 
 /**
  * This file demonstrates the process of starting WebRTC streaming using a KVS Signaling Channel.
@@ -18,7 +24,7 @@ export const master = {
 export async function startMaster(
   localView,
   remoteView,
-  formValues,
+  formValues: IFormValues,
   onStatsReport,
   onRemoteDataMessage
 ) {
@@ -54,20 +60,22 @@ export async function startMaster(
       },
     })
     .promise();
-  const endpointsByProtocol =
+
+  const endpointsByProtocol: ICEServerByProtocol =
     getSignalingChannelEndpointResponse.ResourceEndpointList.reduce(
       (endpoints, endpoint) => {
         endpoints[endpoint.Protocol] = endpoint.ResourceEndpoint;
         return endpoints;
       },
-      {}
+      {} as ICEServerByProtocol
     );
+
   console.log('[MASTER] Endpoints: ', endpointsByProtocol);
 
   // Create Signaling Client
   master.signalingClient = new KVSWebRTC.SignalingClient({
     channelARN,
-    channelEndpoint: 'WSS',
+    channelEndpoint: endpointsByProtocol.WSS,
     role: KVSWebRTC.Role.MASTER,
     region: formValues.region,
     credentials: {
@@ -85,7 +93,7 @@ export async function startMaster(
       accessKeyId: formValues.accessKeyId,
       secretAccessKey: formValues.secretAccessKey,
       sessionToken: formValues.sessionToken,
-      endpoint: 'HTTPS',
+      endpoint: endpointsByProtocol.HTTPS,
       correctClockSkew: true,
     });
   const getIceServerConfigResponse = await kinesisVideoSignalingChannelsClient
@@ -94,12 +102,17 @@ export async function startMaster(
     })
     .promise();
   const iceServers = [];
-  if (!formValues.natTraversalDisabled && !formValues.forceTURN) {
+
+  if (
+    formValues.natTraversal != 'natTraversalDisabled' &&
+    formValues.natTraversal != 'forceTURN'
+  ) {
     iceServers.push({
       urls: `stun:stun.kinesisvideo.${formValues.region}.amazonaws.com:443`,
     });
   }
-  if (!formValues.natTraversalDisabled) {
+
+  if (formValues.natTraversal != 'natTraversalDisabled') {
     getIceServerConfigResponse.IceServerList.forEach((iceServer) =>
       iceServers.push({
         urls: iceServer.Uris,
@@ -108,19 +121,22 @@ export async function startMaster(
       })
     );
   }
+
   console.log('[MASTER] ICE servers: ', iceServers);
 
   const configuration: any = {
     iceServers,
-    iceTransportPolicy: formValues.forceTURN ? 'relay' : 'all',
+    iceTransportPolicy:
+      formValues.natTraversal == 'forceTURN' ? 'relay' : 'all',
   };
 
-  const resolution = formValues.widescreen
-    ? { width: { ideal: 1280 }, height: { ideal: 720 } }
-    : { width: { ideal: 640 }, height: { ideal: 480 } };
+  const resolution =
+    formValues.resolution == 'widescreen'
+      ? { width: { ideal: 1280 }, height: { ideal: 720 } }
+      : { width: { ideal: 640 }, height: { ideal: 480 } };
   const constraints = {
-    video: formValues.sendVideo ? resolution : false,
-    audio: formValues.sendAudio,
+    video: formValues.video ? resolution : false,
+    audio: formValues.audio,
   };
 
   // Get a stream from the webcam and display it in the local view

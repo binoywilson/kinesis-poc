@@ -46,15 +46,16 @@
       <p><small>Control which media types are transmitted to the remote client.</small></p>
       <div class="form-group">
         <div class="form-check form-check-inline">
-          <input class="form-check-input" type="checkbox" id="sendVideo" value="video" checked>
+          <input class="form-check-input" type="checkbox" id="sendVideo" [value]="true" [(ngModel)]="formValues.video">
           <label class="form-check-label">Send Video</label>
         </div>
         <div class="form-check form-check-inline">
-          <input class="form-check-input" type="checkbox" id="sendAudio" value="audio">
+          <input class="form-check-input" type="checkbox" id="sendAudio" [value]="true" [(ngModel)]="formValues.audio">
           <label class="form-check-label">Send Audio</label>
         </div>
         <div class="form-check form-check-inline">
-          <input class="form-check-input" type="checkbox" id="openDataChannel" value="datachannel">
+          <input class="form-check-input" type="checkbox" id="openDataChannel" [value]="true"
+            [(ngModel)]="formValues.openDataChannel">
           <label class="form-check-label">Open DataChannel</label>
         </div>
       </div>
@@ -62,11 +63,13 @@
       <p><small>Set the desired video resolution and aspect ratio.</small></p>
       <div class="form-group">
         <div class="form-check form-check">
-          <input class="form-check-input" type="radio" name="resolution" id="widescreen" value="option1" checked>
+          <input class="form-check-input" type="radio" name="resolution" id="widescreen" value="widescreen"
+            [(ngModel)]="formValues.resolution">
           <label class="form-check-label" for="widescreen">1280x720 <small>(16:9 widescreen)</small></label>
         </div>
         <div class="form-check form-check">
-          <input class="form-check-input" type="radio" name="resolution" id="fullscreen" value="option2">
+          <input class="form-check-input" type="radio" name="resolution" id="fullscreen" value="fullscreen"
+            [(ngModel)]="formValues.resolution">
           <label class="form-check-label" for="fullscreen">640x480 <small>(4:3 fullscreen)</small></label>
         </div>
       </div>
@@ -74,22 +77,25 @@
       <p><small>Control settings for ICE candidate generation.</small></p>
       <div class="form-group">
         <div class="form-check form-check">
-          <input class="form-check-input" type="radio" name="natTraversal" id="natTraversalEnabled" value="option2"
-            checked>
+          <input class="form-check-input" type="radio" name="natTraversal" id="natTraversalEnabled" value="STUN"
+            [(ngModel)]="formValues.natTraversal">
           <label class="form-check-label" for="natTraversalEnabled">STUN/TURN</label>
         </div>
         <div class="form-check form-check">
-          <input class="form-check-input" type="radio" name="natTraversal" id="forceTURN" value="option3">
+          <input class="form-check-input" type="radio" name="natTraversal" id="forceTURN" value="forceTURN"
+            [(ngModel)]="formValues.natTraversal">
           <label class="form-check-label" for="forceTURN">TURN Only <small>(force cloud relay)</small></label>
         </div>
         <div class="form-check form-check">
-          <input class="form-check-input" type="radio" name="natTraversal" id="natTraversalDisabled" value="option1">
+          <input class="form-check-input" type="radio" name="natTraversal" id="natTraversalDisabled" value="natTraversalDisabled"
+            [(ngModel)]="formValues.natTraversal">
           <label class="form-check-label" for="natTraversalDisabled">Disabled</label>
         </div>
       </div>
       <div class="form-group">
         <div class="form-check form-check-inline">
-          <input class="form-check-input" type="checkbox" id="useTrickleICE" value="useTrickleICE" checked>
+          <input class="form-check-input" type="checkbox" id="useTrickleICE" [value]="true"
+            [(ngModel)]="formValues.useTrickleICE">
           <label class="form-check-label">Use trickle ICE <small>(not supported by Alexa devices)</small></label>
         </div>
       </div>
