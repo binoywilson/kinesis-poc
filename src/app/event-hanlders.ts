@@ -14,7 +14,7 @@ export const toggleDataChannelElements = (formValues: IFormValues) => {
   }
 };
 
-export const registerEvents = (createSignalingChannel, formValues: IFormValues) => {
+export const registerEvents = (formValues: IFormValues) => {
   $('#master-button').click(async () => {
     $('#form').addClass('d-none');
     $('#master').removeClass('d-none');
@@ -63,10 +63,6 @@ export const registerEvents = (createSignalingChannel, formValues: IFormValues) 
 
     $('#form').removeClass('d-none');
     $('#viewer').addClass('d-none');
-  });
-
-  $('#create-channel-button').click(async () => {
-    createSignalingChannel(formValues);
   });
 
   $('#master .send-message').click(async () => {

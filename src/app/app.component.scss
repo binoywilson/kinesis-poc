@@ -25,3 +25,7 @@ pre .error {
 pre .warn {
   color: goldenrod;
 }
+
+.btn:not(:last-child) {
+  margin-right: 10px;
+}

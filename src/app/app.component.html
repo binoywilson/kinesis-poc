@@ -87,8 +87,8 @@
           <label class="form-check-label" for="forceTURN">TURN Only <small>(force cloud relay)</small></label>
         </div>
         <div class="form-check form-check">
-          <input class="form-check-input" type="radio" name="natTraversal" id="natTraversalDisabled" value="natTraversalDisabled"
-            [(ngModel)]="formValues.natTraversal">
+          <input class="form-check-input" type="radio" name="natTraversal" id="natTraversalDisabled"
+            value="natTraversalDisabled" [(ngModel)]="formValues.natTraversal">
           <label class="form-check-label" for="natTraversalDisabled">Disabled</label>
         </div>
       </div>
@@ -102,7 +102,9 @@
       <div>
         <button id="master-button" type="button" class="btn btn-primary">Start Master</button>
         <button id="viewer-button" type="button" class="btn btn-primary">Start Viewer</button>
-        <button id="create-channel-button" type="button" class="btn btn-primary">Create Channel</button>
+        <button id="create-channel-button" type="button" class="btn btn-primary" (click)='createSignalingChannel()'>
+          Create Channel
+        </button>
       </div>
     </div>
 

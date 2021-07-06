@@ -92,6 +92,6 @@ export class AppComponent implements AfterViewInit {
     document.querySelector('#main').classList.remove('d-none');
     console.log('Page loaded');
 
-    registerEvents(this.createSignalingChannel, this.formValues);
+    registerEvents(this.formValues);
   }
 }
