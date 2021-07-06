@@ -45,8 +45,6 @@ export class AppComponent implements AfterViewInit {
     });
 
     configureLogging();
-
-    registerEvents(this.createSignalingChannel, this.formValues);
   }
 
   async createSignalingChannel() {
@@ -81,5 +79,7 @@ export class AppComponent implements AfterViewInit {
     document.querySelector('.loader').classList.add('d-none');
     document.querySelector('#main').classList.remove('d-none');
     console.log('Page loaded');
+
+    registerEvents(this.createSignalingChannel, this.formValues);
   }
 }
