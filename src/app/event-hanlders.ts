@@ -1,6 +1,7 @@
 import { IFormValues } from './app.component';
 import { sendMasterMessage, stopMaster, startMaster } from './master.channel';
 import { sendViewerMessage, stopViewer, startViewer } from './viewer.channel';
+import * as $ from 'jquery';
 
 export function onStatsReport(report) {
   // TODO: Publish stats

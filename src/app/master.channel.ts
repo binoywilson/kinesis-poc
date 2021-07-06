@@ -1,5 +1,5 @@
-import * as KVSWebRTC from 'amazon-kinesis-video-streams-webrtc';
-import * as AWS from 'aws-sdk';
+import { SignalingClient, Role } from 'amazon-kinesis-video-streams-webrtc';
+import { KinesisVideo, KinesisVideoSignalingChannels } from 'aws-sdk';
 import { IFormValues } from './app.component';
 
 export interface ICEServerByProtocol {
@@ -11,7 +11,7 @@ export interface ICEServerByProtocol {
  * This file demonstrates the process of starting WebRTC streaming using a KVS Signaling Channel.
  */
 export const master = {
-  signalingClient: null,
+  signalingClient: null as SignalingClient,
   peerConnectionByClientId: {},
   dataChannelByClientId: {},
   localStream: null,
@@ -32,7 +32,7 @@ export async function startMaster(
   master.remoteView = remoteView;
 
   // Create KVS client
-  const kinesisVideoClient = new AWS.KinesisVideo({
+  const kinesisVideoClient = new KinesisVideo({
     region: formValues.region,
     accessKeyId: formValues.accessKeyId,
     secretAccessKey: formValues.secretAccessKey,
@@ -56,7 +56,7 @@ export async function startMaster(
       ChannelARN: channelARN,
       SingleMasterChannelEndpointConfiguration: {
         Protocols: ['WSS', 'HTTPS'],
-        Role: KVSWebRTC.Role.MASTER,
+        Role: Role.MASTER,
       },
     })
     .promise();
@@ -73,10 +73,10 @@ export async function startMaster(
   console.log('[MASTER] Endpoints: ', endpointsByProtocol);
 
   // Create Signaling Client
-  master.signalingClient = new KVSWebRTC.SignalingClient({
+  master.signalingClient = new SignalingClient({
     channelARN,
     channelEndpoint: endpointsByProtocol.WSS,
-    role: KVSWebRTC.Role.MASTER,
+    role: Role.MASTER,
     region: formValues.region,
     credentials: {
       accessKeyId: formValues.accessKeyId,
@@ -87,15 +87,16 @@ export async function startMaster(
   });
 
   // Get ICE server configuration
-  const kinesisVideoSignalingChannelsClient =
-    new AWS.KinesisVideoSignalingChannels({
+  const kinesisVideoSignalingChannelsClient = new KinesisVideoSignalingChannels(
+    {
       region: formValues.region,
       accessKeyId: formValues.accessKeyId,
       secretAccessKey: formValues.secretAccessKey,
       sessionToken: formValues.sessionToken,
       endpoint: endpointsByProtocol.HTTPS,
       correctClockSkew: true,
-    });
+    }
+  );
   const getIceServerConfigResponse = await kinesisVideoSignalingChannelsClient
     .getIceServerConfig({
       ChannelARN: channelARN,

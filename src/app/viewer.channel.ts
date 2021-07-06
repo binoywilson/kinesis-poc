@@ -1,5 +1,5 @@
-import * as KVSWebRTC from 'amazon-kinesis-video-streams-webrtc';
-import * as AWS from 'aws-sdk';
+import { SignalingClient, Role } from 'amazon-kinesis-video-streams-webrtc';
+import { KinesisVideo, KinesisVideoSignalingChannels } from 'aws-sdk';
 import { IFormValues } from './app.component';
 import { ICEServerByProtocol } from './master.channel';
 
@@ -7,7 +7,7 @@ import { ICEServerByProtocol } from './master.channel';
  * This file demonstrates the process of starting WebRTC streaming using a KVS Signaling Channel.
  */
 export const viewer = {
-  signalingClient: null,
+  signalingClient: null as SignalingClient,
   peerConnectionByClientId: {},
   dataChannelByClientId: {},
   localStream: null,
@@ -30,7 +30,7 @@ export async function startViewer(
   viewer.remoteView = remoteView;
 
   // Create KVS client
-  const kinesisVideoClient = new AWS.KinesisVideo({
+  const kinesisVideoClient = new KinesisVideo({
     region: formValues.region,
     accessKeyId: formValues.accessKeyId,
     secretAccessKey: formValues.secretAccessKey,
@@ -55,7 +55,7 @@ export async function startViewer(
       ChannelARN: channelARN,
       SingleMasterChannelEndpointConfiguration: {
         Protocols: ['WSS', 'HTTPS'],
-        Role: KVSWebRTC.Role.VIEWER,
+        Role: Role.VIEWER,
       },
     })
     .promise();
@@ -70,15 +70,16 @@ export async function startViewer(
     );
   console.log('[VIEWER] Endpoints: ', endpointsByProtocol);
 
-  const kinesisVideoSignalingChannelsClient =
-    new AWS.KinesisVideoSignalingChannels({
+  const kinesisVideoSignalingChannelsClient = new KinesisVideoSignalingChannels(
+    {
       region: formValues.region,
       accessKeyId: formValues.accessKeyId,
       secretAccessKey: formValues.secretAccessKey,
       sessionToken: formValues.sessionToken,
       endpoint: endpointsByProtocol.HTTPS,
       correctClockSkew: true,
-    });
+    }
+  );
 
   // Get ICE server configuration
   const getIceServerConfigResponse = await kinesisVideoSignalingChannelsClient
@@ -110,11 +111,11 @@ export async function startViewer(
   console.log('[VIEWER] ICE servers: ', iceServers);
 
   // Create Signaling Client
-  viewer.signalingClient = new KVSWebRTC.SignalingClient({
+  viewer.signalingClient = new SignalingClient({
     channelARN,
     channelEndpoint: endpointsByProtocol.WSS,
     clientId: formValues.clientId,
-    role: KVSWebRTC.Role.VIEWER,
+    role: Role.VIEWER,
     region: formValues.region,
     credentials: {
       accessKeyId: formValues.accessKeyId,

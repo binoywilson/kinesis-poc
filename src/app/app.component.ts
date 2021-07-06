@@ -1,6 +1,6 @@
 import { AfterViewInit, Component } from '@angular/core';
 
-import * as AWS from 'aws-sdk';
+import { KinesisVideo } from 'aws-sdk';
 import { AppConfigService } from './app-config.service';
 import { registerEvents } from './event-hanlders';
 import { configureLogging } from './logger.helper';
@@ -61,7 +61,7 @@ export class AppComponent implements AfterViewInit {
 
   async createSignalingChannel() {
     // Create KVS client
-    const kinesisVideoClient = new AWS.KinesisVideo({
+    const kinesisVideoClient = new KinesisVideo({
       region: this.formValues.region,
       accessKeyId: this.formValues.accessKeyId,
       secretAccessKey: this.formValues.secretAccessKey,
