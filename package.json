@@ -8,7 +8,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "deploy": "ng deply --base-ref=https://binoywilson.github.io/kinesis-poc/"
+    "deploy": "ng deploy --base-ref=https://binoywilson.github.io/kinesis-poc/"
   },
   "private": true,
   "dependencies": {
