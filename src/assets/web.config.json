@@ -10,7 +10,7 @@
     "channelName": "dev-ashwani-test-1"
   },
   "telegram": {
-    "app_id": "6691870",
+    "app_id": 6691870,
     "api_hash": "08d08b85894c1d7703dd968ad551ad32",
     "test_config_url": "149.154.167.40:443",
     "prod_config_url": "149.154.167.50:443"

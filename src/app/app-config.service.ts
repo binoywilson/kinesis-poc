@@ -1,20 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-
-export interface IAppSettings {
-  aws: AwsSettings;
-}
-
-export interface AwsSettings {
-  channelARN: string;
-  accessKeyId: string;
-  secretAccessKey: string;
-  region: string;
-  clientId: string;
-  sessionToken?: string;
-  endpoint?: string;
-  channelName?: string;
-}
+import { IAppSettings } from './models';
 
 @Injectable({
   providedIn: 'root',
