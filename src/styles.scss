@@ -82,3 +82,6 @@ pre .warn {
 .p-32 {
   padding: 32px !important;
 }
+
+/* Importing Bootstrap SCSS file. */
+@import '~bootstrap/scss/bootstrap';

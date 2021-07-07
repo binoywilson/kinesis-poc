@@ -6,7 +6,8 @@ import { AppConfigService } from '../app-config.service';
 
 import { registerEvents } from '../kinesis-helper/event-hanlders';
 import { configureLogging } from '../kinesis-helper/logger.helper';
-import { IFormValues } from '../models';
+import { ModalService } from '../modal.service';
+import { IFormValues, ScreenResolution } from '../models';
 
 @Component({
   selector: 'app-test-channel',
@@ -18,7 +19,11 @@ export class TestChannelComponent implements AfterViewInit {
 
   createChannelLoading = false;
 
-  constructor(private appConfig: AppConfigService, private router: Router) {
+  constructor(
+    private appConfig: AppConfigService,
+    private router: Router,
+    private modalService: ModalService
+  ) {
     this.formValues = {
       region: this.appConfig.config.aws.region,
       accessKeyId: this.appConfig.config.aws.accessKeyId,
@@ -28,7 +33,7 @@ export class TestChannelComponent implements AfterViewInit {
       channelName: this.appConfig.config.aws.channelName,
       clientId: this.appConfig.randomClientId,
       video: true,
-      resolution: 'widescreen',
+      resolution: ScreenResolution.widescreen,
       natTraversal: 'STUN',
       useTrickleICE: true,
     };
@@ -46,7 +51,21 @@ export class TestChannelComponent implements AfterViewInit {
     configureLogging();
   }
 
-  async createSignalingChannel() {
+  startNewChannel(startNewChannelTemplate) {
+    const modalRef = this.modalService.open(startNewChannelTemplate, {
+      windowClass: 'modal-lmd',
+      centered: true,
+      backdrop: 'static',
+    });
+
+    modalRef.result.then(res => {
+      if (res) {
+        this.createSignalingChannel(res);
+      }
+    });
+  }
+
+  async createSignalingChannel(channelName: string) {
     try {
       if (this.createChannelLoading) {
         return;
@@ -66,13 +85,13 @@ export class TestChannelComponent implements AfterViewInit {
       // Get signaling channel ARN
       await kinesisVideoClient
         .createSignalingChannel({
-          ChannelName: this.formValues.channelName,
+          ChannelName: channelName,
         })
         .promise();
 
       this.router.navigate(['/join'], {
         queryParams: {
-          channel: this.formValues.channelName,
+          channel: channelName,
         },
       });
     } catch {

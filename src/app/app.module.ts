@@ -9,6 +9,7 @@ import { JoinChannelComponent } from './join-channel/join-channel.component';
 import { TestChannelComponent } from './test-channel/test-channel.component';
 import { AppRoutingModule } from './app.routes';
 import { TestTelegramComponent } from './test-telegram/test-telegram.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // Add this function
 export function initConfig(config: AppConfigService) {
@@ -23,6 +24,7 @@ export function initConfig(config: AppConfigService) {
     FormsModule,
     ReactiveFormsModule,
     AppRoutingModule,
+    NgbModule,
   ],
   providers: [
     {

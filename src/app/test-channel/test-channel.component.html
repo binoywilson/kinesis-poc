@@ -102,7 +102,7 @@
       <div>
         <button id="master-button" type="button" class="btn btn-primary">Start Master</button>
         <button id="viewer-button" type="button" class="btn btn-primary">Start Viewer</button>
-        <button id="create-channel-button" type="button" class="btn btn-primary" (click)='createSignalingChannel()'>
+        <button id="create-channel-button" type="button" class="btn btn-primary" (click)='startNewChannel(StartNewChannelTemplate)'>
           Create Channel
         </button>
       </div>
@@ -181,3 +181,22 @@
 </div>
 
 <div id="test"></div>
+
+<ng-template #StartNewChannelTemplate let-modal>
+  <div class="modal-header d-block pb-12">
+    <h3 class="modal-title mb-0">New Channel</h3>
+    <button type="button" class="close" (click)="modal.close(null)" aria-label="Close" id="close-btn">
+      <em class="icon icon-close"></em>
+    </button>
+  </div>
+  <div class="modal-body pb-8">
+    <div class="form-group">
+      <label>Channel Name</label>
+      <input type="text" class="form-control" id="channelName" placeholder="Channel" #channelNameInput>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-primary" (click)="modal.close(null)">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="channelNameInput?.value ? modal.close(channelNameInput?.value): null">Start</button>
+  </div>
+</ng-template>
