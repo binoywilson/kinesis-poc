@@ -20,11 +20,11 @@ export const viewer = {
 };
 
 export async function startViewer(
-  localView,
-  remoteView,
+  localView: HTMLVideoElement,
+  remoteView: HTMLVideoElement,
   formValues: IFormValues,
-  onStatsReport,
-  onRemoteDataMessage
+  onStatsReport: (report: any) => void,
+  onRemoteDataMessage: (event: any) => void
 ) {
   viewer.localView = localView;
   viewer.remoteView = remoteView;

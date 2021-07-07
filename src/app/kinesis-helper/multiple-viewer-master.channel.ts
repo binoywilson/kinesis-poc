@@ -21,12 +21,12 @@ export const master = {
   remoteView: null,
 };
 
-export async function startMasterChannel(
-  localView,
+export async function startMultipleViewerMasterChannel(
+  localView: HTMLVideoElement,
   remoteView: HTMLDivElement,
   formValues: IFormValues,
-  onStatsReport,
-  onRemoteDataMessage
+  onStatsReport: (report: any) => void,
+  onRemoteDataMessage: (event: any) => void
 ) {
   master.localView = localView;
   master.remoteView = remoteView;

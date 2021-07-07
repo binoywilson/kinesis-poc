@@ -20,8 +20,8 @@ export const registerEvents = (formValues: IFormValues) => {
     $('#form').addClass('d-none');
     $('#master').removeClass('d-none');
 
-    const localView = $('#master .local-view')[0];
-    const remoteView = $('#master .remote-view')[0];
+    const localView = $('#master .local-view')[0] as HTMLVideoElement;
+    const remoteView = $('#master .remote-view')[0] as HTMLVideoElement;
     const localMessage = $('#master .local-message')[0] as HTMLInputElement;
     const remoteMessage = $('#master .remote-message')[0];
 
@@ -45,8 +45,8 @@ export const registerEvents = (formValues: IFormValues) => {
     $('#form').addClass('d-none');
     $('#viewer').removeClass('d-none');
 
-    const localView = $('#viewer .local-view')[0];
-    const remoteView = $('#viewer .remote-view')[0];
+    const localView = $('#viewer .local-view')[0] as HTMLVideoElement;
+    const remoteView = $('#viewer .remote-view')[0] as HTMLVideoElement;
     const localMessage = $('#viewer .local-message')[0] as HTMLInputElement;
     const remoteMessage = $('#viewer .remote-message')[0];
 

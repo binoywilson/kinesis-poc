@@ -22,11 +22,11 @@ export const master = {
 };
 
 export async function startMaster(
-  localView,
-  remoteView,
+  localView: HTMLVideoElement,
+  remoteView: HTMLVideoElement,
   formValues: IFormValues,
-  onStatsReport,
-  onRemoteDataMessage
+  onStatsReport: (report: any) => void,
+  onRemoteDataMessage: (event: any) => void
 ) {
   master.localView = localView;
   master.remoteView = remoteView;

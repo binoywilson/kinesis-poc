@@ -11,9 +11,9 @@ import {
   stopViewer as exitJoinee,
 } from '../kinesis-helper/viewer.channel';
 import {
-  startMasterChannel,
+  startMultipleViewerMasterChannel,
   stopMasterChannel,
-} from '../kinesis-helper/join-channel.helper';
+} from '../kinesis-helper/multiple-viewer-master.channel';
 
 @Component({
   selector: 'app-join-channel',
@@ -93,10 +93,10 @@ export class JoinChannelComponent implements OnInit {
     $('#master').removeClass('d-none');
     $('#hideAll').removeClass('d-none');
 
-    const localView = $('#master .local-view')[0];
+    const localView = $('#master .local-view')[0] as HTMLVideoElement;
     const remoteView = $('#master #remote-view')[0] as HTMLDivElement;
 
-    startMasterChannel(
+    startMultipleViewerMasterChannel(
       localView,
       remoteView,
       this.formValues,
@@ -120,8 +120,8 @@ export class JoinChannelComponent implements OnInit {
     $('#hideAll').removeClass('d-none');
     $('#viewer').removeClass('d-none');
 
-    const localView = $('#viewer .local-view')[0];
-    const remoteView = $('#viewer .remote-view')[0];
+    const localView = $('#viewer .local-view')[0] as HTMLVideoElement;
+    const remoteView = $('#viewer .remote-view')[0] as HTMLVideoElement;
 
     addJoinee(
       localView,
