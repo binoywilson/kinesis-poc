@@ -9,7 +9,7 @@ export interface IFormValues {
   video?: boolean;
   audio?: boolean;
   openDataChannel?: boolean;
-  resolution?: string;
+  resolution?: ScreenResolution;
   natTraversal?: string;
   useTrickleICE?: boolean;
 }
@@ -30,8 +30,13 @@ export interface AwsSettings {
   channelName?: string;
 }
 export interface TelegramSettings {
-  app_id: number
-  api_hash: string
-  test_config_url: string
-  prod_config_url: string
+  app_id: number;
+  api_hash: string;
+  test_config_url: string;
+  prod_config_url: string;
+}
+
+export enum ScreenResolution {
+  widescreen = 'widescreen',
+  fullscreen = 'fullscreen',
 }

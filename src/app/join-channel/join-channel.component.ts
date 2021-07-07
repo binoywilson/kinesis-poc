@@ -5,7 +5,7 @@ import * as $ from 'jquery';
 
 import { AppConfigService } from '../app-config.service';
 import { onStatsReport } from '../kinesis-helper/event-hanlders';
-import { IFormValues } from '../models';
+import { IFormValues, ScreenResolution } from '../models';
 import {
   startViewer as addJoinee,
   stopViewer as exitJoinee,
@@ -39,7 +39,7 @@ export class JoinChannelComponent implements OnInit {
       sessionToken: this.appConfig.config.aws.sessionToken,
       endpoint: this.appConfig.config.aws.endpoint,
       video: true,
-      resolution: 'widescreen',
+      resolution: ScreenResolution.widescreen,
       natTraversal: 'STUN',
       useTrickleICE: true,
     };

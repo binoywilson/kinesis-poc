@@ -1,6 +1,6 @@
 import { SignalingClient, Role } from 'amazon-kinesis-video-streams-webrtc';
 import { KinesisVideo, KinesisVideoSignalingChannels } from 'aws-sdk';
-import { IFormValues } from '../models';
+import { IFormValues, ScreenResolution } from '../models';
 
 export interface ICEServerByProtocol {
   WSS: string;
@@ -132,7 +132,7 @@ export async function startMultipleViewerMasterChannel(
   };
 
   const resolution =
-    formValues.resolution == 'widescreen'
+    formValues.resolution == ScreenResolution.widescreen
       ? { width: { ideal: 1280 }, height: { ideal: 720 } }
       : { width: { ideal: 640 }, height: { ideal: 480 } };
   const constraints = {
