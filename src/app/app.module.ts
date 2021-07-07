@@ -8,6 +8,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { JoinChannelComponent } from './join-channel/join-channel.component';
 import { TestChannelComponent } from './test-channel/test-channel.component';
 import { AppRoutingModule } from './app.routes';
+import { TestTelegramComponent } from './test-telegram/test-telegram.component';
 
 // Add this function
 export function initConfig(config: AppConfigService) {
@@ -15,7 +16,7 @@ export function initConfig(config: AppConfigService) {
 }
 
 @NgModule({
-  declarations: [AppComponent, JoinChannelComponent, TestChannelComponent],
+  declarations: [AppComponent, JoinChannelComponent, TestChannelComponent, TestTelegramComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
