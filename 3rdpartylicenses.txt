@@ -10,6 +10,9 @@ MIT
 @angular/platform-browser
 MIT
 
+@angular/router
+MIT
+
 amazon-kinesis-video-streams-webrtc
 Apache-2.0
 
