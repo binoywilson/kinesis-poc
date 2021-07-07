@@ -49,7 +49,7 @@ export class JoinChannelComponent implements OnInit {
     this.route.queryParams.subscribe((params) => {
       this.channelName = params['channel'];
       this.clientId = params['clientId'];
-      this.isViewer = params['view'] == '1';
+      this.isViewer = !!params['clientId'];
 
       if (this.channelName) {
         this.setupSignalingChannel();
@@ -113,7 +113,7 @@ export class JoinChannelComponent implements OnInit {
   }
 
   startJoinee() {
-    window.open(`${window.location}&view=1&clientId=${this.appConfig.randomClientId}`, '_blank');
+    window.open(`${window.location}&clientId=${this.appConfig.randomClientId}`, '_blank');
   }
 
   private _startJoinee() {
